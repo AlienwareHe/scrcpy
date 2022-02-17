@@ -60,7 +60,7 @@ public final class Server {
     }
 
     private static void scrcpy(Options options) throws IOException {
-        Ln.i("Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (Android " + Build.VERSION.RELEASE + ")");
+        Ln.i("Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (Android " + Build.VERSION.RELEASE + ")" + " - " + BuildConfig.DEBUG);
         final Device device = new Device(options);
         List<CodecOption> codecOptions = options.getCodecOptions();
 
@@ -132,7 +132,7 @@ public final class Server {
                     controller.control();
                 } catch (IOException e) {
                     // this is expected on close
-                    Ln.d("Controller stopped");
+                    Ln.w("Controller stopped",e);
                 }
             }
         });
