@@ -61,6 +61,7 @@ public final class Server {
 
     private static void scrcpy(Options options) throws IOException {
         Ln.i("Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (Android " + Build.VERSION.RELEASE + ")" + " - " + BuildConfig.DEBUG);
+        Ln.i("run options: " + options);
         final Device device = new Device(options);
         List<CodecOption> codecOptions = options.getCodecOptions();
 
@@ -95,21 +96,21 @@ public final class Server {
                 });
             }
 
-            try {
-                // synchronous
-                screenEncoder.streamScreen(device, connection.getVideoFd());
-            } catch (IOException e) {
-                // this is expected on close
-                Ln.d("Screen streaming stopped");
-            } finally {
-                initThread.interrupt();
-                if (controllerThread != null) {
-                    controllerThread.interrupt();
-                }
-                if (deviceMessageSenderThread != null) {
-                    deviceMessageSenderThread.interrupt();
-                }
-            }
+//            try {
+//                // synchronous
+//                screenEncoder.streamScreen(device, connection.getVideoFd());
+//            } catch (IOException e) {
+//                // this is expected on close
+//                Ln.e("Screen streaming stopped:",e);
+//            } finally {
+//                initThread.interrupt();
+//                if (controllerThread != null) {
+//                    controllerThread.interrupt();
+//                }
+//                if (deviceMessageSenderThread != null) {
+//                    deviceMessageSenderThread.interrupt();
+//                }
+//            }
         }
     }
 
@@ -148,7 +149,7 @@ public final class Server {
                     sender.loop();
                 } catch (IOException | InterruptedException e) {
                     // this is expected on close
-                    Ln.d("Device message sender stopped");
+                    Ln.e("Device message sender stopped",e);
                 }
             }
         });

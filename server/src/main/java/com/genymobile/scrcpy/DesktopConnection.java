@@ -60,7 +60,10 @@ public final class DesktopConnection implements Closeable {
                 if (control) {
                     try {
                         controlSocket = localServerSocket.accept();
-                        controlSocket.getOutputStream().write(0);
+                        if(sendDummyByte){
+                            controlSocket.getOutputStream().write(0);
+                        }
+                        Ln.i("control socket accept!");
                     } catch (IOException | RuntimeException e) {
                         videoSocket.close();
                         throw e;

@@ -44,7 +44,7 @@ public class ScreenEncoder implements Device.RotationListener {
     private boolean firstFrameSent;
 
     public ScreenEncoder(boolean sendFrameMeta, int bitRate, int maxFps, List<CodecOption> codecOptions, String encoderName,
-            boolean downsizeOnError) {
+                         boolean downsizeOnError) {
         this.sendFrameMeta = sendFrameMeta;
         this.bitRate = bitRate;
         this.maxFps = maxFps;
