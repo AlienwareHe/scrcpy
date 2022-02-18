@@ -162,7 +162,10 @@ public final class Device {
         if (!unlockedVideoSize.equals(clientVideoSize)) {
             // The client sends a click relative to a video with wrong dimensions,
             // the device may have been rotated since the event was generated, so ignore the event
-            return null;
+            Ln.w(String.format("warning: unlockedVideoSize= %s, and clientVideoSize=%s",unlockedVideoSize,clientVideoSize));
+            // 因为computeViedoSize的时候H.264只接受8的倍数，所以scrcpy计算时会取最近的8的倍数，导致这里出现偏差
+            // 貌似并不需要严格遵守
+            //return null;
         }
         Rect contentRect = screenInfo.getContentRect();
         Point point = devicePosition.getPoint();
