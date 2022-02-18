@@ -96,21 +96,21 @@ public final class Server {
                 });
             }
 
-//            try {
-//                // synchronous
-//                screenEncoder.streamScreen(device, connection.getVideoFd());
-//            } catch (IOException e) {
-//                // this is expected on close
-//                Ln.e("Screen streaming stopped:",e);
-//            } finally {
-//                initThread.interrupt();
-//                if (controllerThread != null) {
-//                    controllerThread.interrupt();
-//                }
-//                if (deviceMessageSenderThread != null) {
-//                    deviceMessageSenderThread.interrupt();
-//                }
-//            }
+            try {
+                // synchronous
+                screenEncoder.streamScreen(device, connection.getVideoFd());
+            } catch (IOException e) {
+                // this is expected on close
+                Ln.e("Screen streaming stopped:",e);
+            } finally {
+                initThread.interrupt();
+                if (controllerThread != null) {
+                    controllerThread.interrupt();
+                }
+                if (deviceMessageSenderThread != null) {
+                    deviceMessageSenderThread.interrupt();
+                }
+            }
         }
     }
 
