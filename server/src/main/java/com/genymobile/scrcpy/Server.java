@@ -96,14 +96,23 @@ public final class Server {
                 });
             }
 
-            try {
-                // synchronous
-                screenEncoder.streamScreen(device, connection.getVideoFd());
-            } catch (IOException e) {
-                // this is expected on close
-                Ln.e("Screen streaming stopped:",e);
-            } finally {
-                if(options.isNeedScreen()){
+            // 如果仅仅是为了接收控制事件，不需要开启屏幕流
+            if (!options.isNeedScreen() && control) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
+                try {
+                    // synchronous
+                    screenEncoder.streamScreen(device, connection.getVideoFd());
+                } catch (IOException e) {
+                    // this is expected on close
+                    Ln.e("Screen streaming stopped:", e);
+                } finally {
                     initThread.interrupt();
                     if (controllerThread != null) {
                         controllerThread.interrupt();
@@ -135,7 +144,7 @@ public final class Server {
                     controller.control();
                 } catch (IOException e) {
                     // this is expected on close
-                    Ln.w("Controller stopped",e);
+                    Ln.w("Controller stopped", e);
                 }
             }
         });
@@ -151,7 +160,7 @@ public final class Server {
                     sender.loop();
                 } catch (IOException | InterruptedException e) {
                     // this is expected on close
-                    Ln.e("Device message sender stopped",e);
+                    Ln.e("Device message sender stopped", e);
                 }
             }
         });
