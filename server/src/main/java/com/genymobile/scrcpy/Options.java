@@ -27,6 +27,9 @@ public class Options {
     private boolean sendFrameMeta = true; // send PTS so that the client may record properly
     private boolean sendDummyByte = true; // write a byte on start to detect connection issues
 
+    // 是否需要开启屏幕流传输
+    private boolean needScreen;
+
     public Ln.Level getLogLevel() {
         return logLevel;
     }
@@ -179,6 +182,14 @@ public class Options {
         this.sendDummyByte = sendDummyByte;
     }
 
+    public boolean isNeedScreen() {
+        return needScreen;
+    }
+
+    public void setNeedScreen(boolean needScreen) {
+        this.needScreen = needScreen;
+    }
+
     @Override
     public String toString() {
         return "Options{" +
@@ -201,6 +212,7 @@ public class Options {
                 ", sendDeviceMeta=" + sendDeviceMeta +
                 ", sendFrameMeta=" + sendFrameMeta +
                 ", sendDummyByte=" + sendDummyByte +
+                ", needScreen=" + needScreen +
                 '}';
     }
 }

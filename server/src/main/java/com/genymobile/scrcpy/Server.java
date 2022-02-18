@@ -103,12 +103,14 @@ public final class Server {
                 // this is expected on close
                 Ln.e("Screen streaming stopped:",e);
             } finally {
-                initThread.interrupt();
-                if (controllerThread != null) {
-                    controllerThread.interrupt();
-                }
-                if (deviceMessageSenderThread != null) {
-                    deviceMessageSenderThread.interrupt();
+                if(options.isNeedScreen()){
+                    initThread.interrupt();
+                    if (controllerThread != null) {
+                        controllerThread.interrupt();
+                    }
+                    if (deviceMessageSenderThread != null) {
+                        deviceMessageSenderThread.interrupt();
+                    }
                 }
             }
         }
