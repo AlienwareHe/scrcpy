@@ -198,6 +198,47 @@ public final class Device {
         return SERVICE_MANAGER.getInputManager().injectInputEvent(inputEvent, injectMode);
     }
 
+    private boolean rawSetClipboardText(String text) {
+        ClipboardManager clipboardManager = SERVICE_MANAGER.getClipboardManager();
+        if (clipboardManager == null) {
+            return false;
+        }
+        return clipboardManager.setText(text);
+    }
+
+    public boolean injectKeyEvent(int action, int keyCode, int repeat, int metaState) {
+        return injectKeyEvent(action, keyCode, repeat, metaState, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+    }
+
+    public boolean injectKeycode(int keyCode, int mode) {
+        return injectKeyEvent(KeyEvent.ACTION_DOWN, keyCode, 0, 0) && injectKeyEvent(KeyEvent.ACTION_UP, keyCode, 0, 0, mode);
+    }
+
+    public boolean injectKeycode(int keyCode) {
+        return injectKeycode(keyCode, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+    }
+
+    public boolean injectTextPaste(String text) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return false;
+        }
+
+        // On Android >= 7, we can inject UTF-8 text as follow:
+        // - set the clipboard
+        // - inject the PASTE key event
+        // - restore the clipboard
+
+        String clipboardBackup = getClipboardText();
+        isSettingClipboard.set(true);
+
+        rawSetClipboardText(text);
+        boolean ok = injectKeycode(KeyEvent.KEYCODE_PASTE, InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_RESULT);
+        rawSetClipboardText(clipboardBackup);
+
+        isSettingClipboard.set(false);
+        return ok;
+    }
+
     public boolean injectEvent(InputEvent event, int injectMode) {
         return injectEvent(event, displayId, injectMode);
     }
